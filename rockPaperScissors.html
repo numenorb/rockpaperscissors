@@ -1,0 +1,92 @@
+<script>
+    console.log("test");
+
+
+
+
+/**
+    ** write a rock paper scissor game **
+    ##Create a random return with three options 
+    ##Assign each of those options one of rock, paper or scissors
+    ##return this choice
+    ##have the user input their choice.
+    compare with the computer's random choice 
+    return win lose or tie
+    if tie, recursively replay
+    if win or lose, give result and ask to play again
+**/
+
+function playAgain(){
+    let userChoice = prompt("Play again?(Y or N): ").toUpperCase();
+    return userChoice == "Y" ? compareInputsRPS()
+        : userChoice == "N" ? false
+        : playAgain();
+}
+
+function computerPlay(){
+    let randomChoiceNumber = Math.floor(Math.random()*3);
+    return randomChoiceNumber == 0 ? "Rock"
+        : randomChoiceNumber == 1 ? "Scissors"
+        :"Paper";
+}
+
+function userPlay(text){
+    let userChoice = prompt(text);
+    userChoice = userChoice[0].toUpperCase() + userChoice.slice(1);
+    if (userChoice == null){
+        return userPlay("Please Enter a valid option: ")
+    } else if (userChoice == "Rock" || userChoice == "Paper" || userChoice == "Scissors"){
+        return userChoice;
+    } else{
+        return userPlay("Only choose Rock, Paper or Scissors: ");
+    }
+}
+
+function playRound(){
+    let compFinalChoice = computerPlay();
+    let userFinalChoice = userPlay("Please choose Rock, Paper or Scissors: ");
+    if (compFinalChoice == userFinalChoice){
+        console.log("Tie, try again!");
+        playRound();
+    }else if ((compFinalChoice == "Rock" && userFinalChoice == "Scissors") || (compFinalChoice == "Paper" && userFinalChoice == "Rock") || compFinalChoice == "Scissors" && userFinalChoice == "Paper"){
+        console.log(`You Lose! ${compFinalChoice} beats ${userFinalChoice}`);
+        return false; 
+    } else{
+        console.log(`You Win! ${userFinalChoice} beats ${compFinalChoice}`);
+        return true;
+    }
+
+}
+
+function game(){
+    let computerScore = 0;
+    let userScore = 0;
+    for(let i = 0; i <5; i++){
+        outCome = playRound(); 
+        if (outCome){    // in playRound, losing = false & winning = true;
+            userScore++;
+        } else{
+            computerScore++;
+        }
+        
+    }
+    let outcome = userScore - computerScore;
+    if (outcome > 0){
+        console.log(`You Win the Game ${userScore} to ${computerScore}`);
+    } else{
+        console.log(`You Win the Game ${userScore} to ${computerScore}`);
+    }
+
+}
+
+
+/**
+ *     } else if ((compFinalChoice == "Rock" && userFinalChoice == "Scissors") || (compFinalChoice == "Paper" && userFinalChoice == "Rock") || compFinalChoice == "Scissors" && userFinalChoice == "Paper"){
+        console.log(`You Lose! ${compFinalChoice} beats ${userFinalChoice} Try again?`);
+        playAgain();
+    } else{
+        console.log(`You Win! ${userFinalChoice} beats ${compFinalChoice} Play again?`);
+        playAgain();
+    }
+**/
+</script>
