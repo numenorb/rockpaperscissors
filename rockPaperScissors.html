@@ -1,21 +1,4 @@
 <script>
-    console.log("test");
-
-
-
-
-/**
-    ** write a rock paper scissor game **
-    ##Create a random return with three options 
-    ##Assign each of those options one of rock, paper or scissors
-    ##return this choice
-    ##have the user input their choice.
-    compare with the computer's random choice 
-    return win lose or tie
-    if tie, recursively replay
-    if win or lose, give result and ask to play again
-**/
-
 function playAgain(){
     let userChoice = prompt("Play again?(Y or N): ").toUpperCase();
     return userChoice == "Y" ? compareInputsRPS()
@@ -55,7 +38,6 @@ function playRound(){
         console.log(`You Win! ${userFinalChoice} beats ${compFinalChoice}`);
         return true;
     }
-
 }
 function game(){
     let computerScore = 0;
@@ -78,14 +60,4 @@ function game(){
 
 }
 
-
-/**
- *     } else if ((compFinalChoice == "Rock" && userFinalChoice == "Scissors") || (compFinalChoice == "Paper" && userFinalChoice == "Rock") || compFinalChoice == "Scissors" && userFinalChoice == "Paper"){
-        console.log(`You Lose! ${compFinalChoice} beats ${userFinalChoice} Try again?`);
-        playAgain();
-    } else{
-        console.log(`You Win! ${userFinalChoice} beats ${compFinalChoice} Play again?`);
-        playAgain();
-    }
-**/
 </script>
