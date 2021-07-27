@@ -1,4 +1,189 @@
+<head>
+    <link rel = 'stylesheet' type = "text/css" href = "style.css" />
+    <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+    crossorigin="anonymous"
+  /></head>
+<body>
+    <div id = "navbar" class = "layoutDiv">
+        <div id = "userScoreBox" class = "scoreBox">0</div>
+        <h1 id = "game-title">Rock, Paper, Scissors, Go!</h1>
+        <div id = "computerScoreBox" class = "scoreBox">0</div>
+    </div>
+    <div id = 'top-main' class = "main-div layoutDiv">
+        
+        <div id = 'icons'>
+            <span id = "rock" class = "icon">
+                <p>ROCK!</p> 
+                <i class="far fa-hand-rock fa-10x"></i>
+            </span>
+            <span id = "paper" class = "icon">
+                <p>PAPER!</p> 
+                <i class="far fa-hand-paper fa-10x"></i>
+            </span>
+            <span id = "scissors" class = "icon">
+                <p>SCISSORS!</p> 
+                <i class="far fa-hand-scissors fa-10x"></i>
+            </span>
+        </div>
+    </div>    
+    <div id = 'bottomMain' class = "main-div layoutDiv">
+        <div id = "top">
+            <div id = "user-choice-display" class = "choiceDiv topRow">
+                <p id = "users-choice">Player's Choice</p>
+            </div>
+            <div id = "computer-choice-display" class = "choiceDiv topRow">
+                <p id = "computers-choice">Computer's Choice</p>
+            </div>
+        </div>
+        <div id = "game-outcome" class = "choiceDiv secondRow">
+
+        </div>
+    </div>
+    <div id = "game-outcome-box">
+        <h3>Final Score: </h3>
+        <p id = "finalUserDisplay">0</p>
+        <p id = "finalComputerDisplay">0</p>
+        <button id = "playagain">Play again?</button>
+    </div>
+    <div class = "overlay"></div>
+    
+</body>
+
+
 <script>
+
+const userChoiceDisplay = document.getElementById("user-choice-display");   // gets the whole div
+const computerChoiceDisplay = document.getElementById("computer-choice-display"); // "" ""
+const usersChoice = document.getElementById("users-choice");    // gets just the text saying "XXXX choice"
+const computersChoice = document.getElementById("computers-choice"); // "" ""
+const outcomeDisplay = document.getElementById("game-outcome"); // gets outcome display
+const box = document.querySelector("#game-outcome-box");   //hidden box
+const overlay = document.querySelector(".overlay");   //hidden
+ 
+let computerScoreBox = document.querySelector("#computerScoreBox"); // assigns score box
+let userScoreBox = document.querySelector("#userScoreBox");    // "" "" 
+let computerScore = 0;
+let userScore = 0;
+
+
+// functional buttons to play rounds
+document.getElementById("rock").onclick = function() {game("rock")};
+document.getElementById("paper").onclick = function() {game("paper")};
+document.getElementById("scissors").onclick = function() {game("scissors")};
+
+
+
+
+
+function computerPlay(){
+    let randomChoiceNumber = Math.floor(Math.random()*3);
+    return randomChoiceNumber == 0 ? "ROCK"
+        : randomChoiceNumber == 1 ? "SCISSORS"
+        :"PAPER";
+}
+
+function playRound(userFinalChoice, compFinalChoice){
+    if (compFinalChoice == userFinalChoice){
+        return "Tie, try again!";
+    }else if ((compFinalChoice == "ROCK" && userFinalChoice == "SCISSORS") 
+        || (compFinalChoice == "PAPER" && userFinalChoice == "ROCK") 
+        || (compFinalChoice == "SCISSORS" && userFinalChoice == "PAPER")){
+        computerScore++;
+        return `Computer Scores! ${compFinalChoice} beats ${userFinalChoice}`;
+    } else{
+        userScore++;
+        return`You Score! ${userFinalChoice} beats ${compFinalChoice}`;
+      
+    }
+}
+function resetGame(){
+    userScore = 0;
+    computerScore = 0;
+    computerScoreBox.textContent = ``;
+    userScoreBox.textContent = ``;
+    overlay.classList.remove("game-restart");
+    box.classList.remove("game-restart");
+}
+
+function playAgain(userScore, computerScore){
+    const userScoreDisplay = document.getElementById("finalUserDisplay");  
+    const computerScoreDisplay = document.querySelector("#finalComputerDisplay");
+    overlay.classList.add("game-restart");
+    box.classList.add("game-restart");  //style.display="block";
+    userScoreDisplay.innerText = `You: ${userScore}`;
+    computerScoreDisplay.innerText = `Computer: ${computerScore}`;
+    document.getElementById("playagain").onclick = function() {resetGame()};
+
+
+    
+
+  
+  
+}
+
+function checkScore(userScore, computerScore){
+    // this will be wehre we compare scores and display on the website
+    
+    computerScoreBox.textContent = computerScore;
+    userScoreBox.textContent = userScore;
+    if (userScore === 5){
+        outcomeDisplay.innerText = "GAME OVER! YOU WIN!";
+        playAgain(userScore, computerScore);
+    }
+    if (computerScore ===5){
+        document.querySelector("#icons").disabled = true;
+        playAgain(userScore, computerScore);
+
+    } 
+}
+
+
+
+function game(userChoice){
+
+    userChoiceDisplay.removeChild(userChoiceDisplay.lastChild);  // clears previous game
+    computerChoiceDisplay.removeChild(computerChoiceDisplay.lastChild); // "" ""
+    outcomeDisplay.removeChild(outcomeDisplay.lastChild);         // ""  ""
+    const finalUserChoice = userChoice.toUpperCase(); 
+    userChoiceDisplay.append(finalUserChoice);
+    const finalComputerChoice = computerPlay();  // returns ROCK, PAPER OR SCISSORS
+    computerChoiceDisplay.append(finalComputerChoice);
+    const outcome = playRound(finalUserChoice, finalComputerChoice); // returns win/lose/tie message
+    outcomeDisplay.append(outcome);
+    checkScore(userScore, computerScore);
+
+}
+
+
+
+
+
+
+
+
+/*
+click a button to run game with their choice - done
+display user choice and computer choice on the screen - done
+decide the winner and loser, or whether its a tie - done
+display the outcome of the game - done
+
+create a variable that measures the user and computer scores - DONE
+display these variables on the screen
+announce a winner if either reaches 5
+reset the game and scores to 0 at this point
+
+
+*/
+
+
+
+
+
+/*  commented out original console version of game. pulll out as needed
+
 function playAgain(){
     let userChoice = prompt("Play again?(Y or N): ").toUpperCase();
     return userChoice == "Y" ? compareInputsRPS()
@@ -6,16 +191,12 @@ function playAgain(){
         : playAgain();
 }
 
-function computerPlay(){
-    let randomChoiceNumber = Math.floor(Math.random()*3);
-    return randomChoiceNumber == 0 ? "Rock"
-        : randomChoiceNumber == 1 ? "Scissors"
-        :"Paper";
+
 }
 
 function userPlay(text){
     let userChoice = prompt(text);
-    userChoice = userChoice[0].toUpperCase() + userChoice.slice(1);
+    userChoice = userChoice[0].toUpperCase() + userChoice.slice(1).toLowerCase();
     if (userChoice == null){
         return userPlay("Please Enter a valid option: ")
     } else if (userChoice == "Rock" || userChoice == "Paper" || userChoice == "Scissors"){
@@ -25,20 +206,7 @@ function userPlay(text){
     }
 }
 
-function playRound(){
-    let compFinalChoice = computerPlay();
-    let userFinalChoice = userPlay("Please choose Rock, Paper or Scissors: ");
-    if (compFinalChoice == userFinalChoice){
-        console.log("Tie, try again!");
-        playRound();
-    }else if ((compFinalChoice == "Rock" && userFinalChoice == "Scissors") || (compFinalChoice == "Paper" && userFinalChoice == "Rock") || compFinalChoice == "Scissors" && userFinalChoice == "Paper"){
-        console.log(`You Lose! ${compFinalChoice} beats ${userFinalChoice}`);
-        return false; 
-    } else{
-        console.log(`You Win! ${userFinalChoice} beats ${compFinalChoice}`);
-        return true;
-    }
-}
+
 function game(){
     let computerScore = 0;
     let userScore = 0;
@@ -58,6 +226,8 @@ function game(){
         console.log(`You Win the Game ${userScore} to ${computerScore}`);
     }
 
-}
+} 
+*/
+
 
 </script>
